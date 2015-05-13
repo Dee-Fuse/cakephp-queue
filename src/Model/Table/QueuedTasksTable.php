@@ -39,6 +39,8 @@ class QueuedTasksTable extends Table {
 	}
 
 	/**
+	 * initialize Config
+	 *
 	 * @return void
 	 */
 	public function initConfig() {
@@ -154,6 +156,38 @@ class QueuedTasksTable extends Table {
 				'jobtype'
 			]
 		];
+		return $this->find('all', $options);
+	}
+
+	/**
+	 * Return some statistics about running jobs still in the Database.
+	 * TO-DO: rewrite as virtual field
+	 *
+	 * @param string $type jobType to display
+	 * @return array
+	 */
+	public function getRunning($type = null) {
+		$options = [
+			'fields' => function ($query) {
+				return [
+					'jobtype',
+					'num' => $query->func()->count('*'),
+				];
+			},
+			'conditions' => [
+				'completed IS' => null,
+				'fetched IS NOT' => null
+			],
+			'group' => [
+				'jobtype'
+			],
+			'order' => [
+				'fetched' => 'ASC'
+			]
+		];
+		if ($type !== null) {
+			$options['conditions']['jobtype'] = $type;
+		}
 		return $this->find('all', $options);
 	}
 

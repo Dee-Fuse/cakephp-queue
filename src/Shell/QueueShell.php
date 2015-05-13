@@ -6,9 +6,9 @@ use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Filesystem\Folder;
+use Cake\I18n\Number;
 use Cake\Log\Log;
 use Cake\Utility\Inflector;
-use Cake\I18n\Number;
 
 declare(ticks = 1);
 
@@ -294,6 +294,12 @@ class QueueShell extends Shell {
 		}
 		$this->hr();
 		$this->out('Total unfinished Jobs      : ' . $this->QueuedTasks->getLength());
+		$this->hr();
+		$running = $this->QueuedTasks->getRunning()->toArray();
+		$this->out('Total running Jobs	  : ');
+		foreach ($running as $run) {
+			$this->out("      " . str_pad($run['jobtype'], 20, ' ', STR_PAD_RIGHT) . ": " . str_pad($run['num'], 20, ' ', STR_PAD_RIGHT));
+		}
 		$this->hr();
 		$this->out('Finished Job Statistics:');
 		$data = $this->QueuedTasks->getStats();
