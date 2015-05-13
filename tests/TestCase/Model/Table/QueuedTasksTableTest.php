@@ -308,10 +308,10 @@ class QueuedTasksTableTest extends TestCase {
 		$this->assertTrue((bool)$this->QueuedTasks->createJob('dummytask', null));
 
 		list($usec, $sec) = explode(" ", microtime());
-		if ($usec < 0.9) {
+		if ($usec < 0.95) {
 			time_sleep_until(time() + 1);
 		}
-		
+
 		//At first we get task1-1.
 		$this->QueuedTasks->clearKey();
 		$tmp = $this->QueuedTasks->requestJob($capabilities);

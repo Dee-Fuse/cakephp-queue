@@ -136,7 +136,7 @@ class TestQueueShell extends QueueShell {
 	public function out($message = null, $newlines = 1, $level = Shell::NORMAL) {
 		$this->out[] = $message;
 	}
-	
+
 	/**
 	 * Get task configuration
 	 *

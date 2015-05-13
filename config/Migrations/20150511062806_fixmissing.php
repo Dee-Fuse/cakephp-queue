@@ -14,7 +14,6 @@ class Fixmissing extends AbstractMigration {
 	 *
 	 * @return void
 	 */
-
 	public function change() {
 		$table = $this->table('queued_tasks');
 		$table->addColumn('status', 'string', array('limit' => 255))

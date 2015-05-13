@@ -296,7 +296,7 @@ class QueueShell extends Shell {
 		$this->hr();
 		$this->out('Total unfinished Jobs      : ' . $this->QueuedTasks->getLength());
 		$this->hr();
-		$running = $this->QueuedTasks->getRunning()->toArray();
+		$running = $this->QueuedTasks->getRunning();
 		$this->out('Total running Jobs	  : ');
 		foreach ($running as $run) {
 			$this->out("      " . str_pad($run['jobtype'], 20, ' ', STR_PAD_RIGHT) . ": " . str_pad($run['num'], 20, ' ', STR_PAD_RIGHT));
