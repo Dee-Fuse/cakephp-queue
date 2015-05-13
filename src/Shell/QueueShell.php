@@ -36,7 +36,8 @@ class QueueShell extends Shell {
 	 * @return void
 	 */
 	public function initialize() {
-		$paths = App::path('Console/Command/Task');
+		$this->loadTasks();
+		$paths = App::path('Shell/Task');
 
 		foreach ($paths as $path) {
 			$Folder = new Folder($path);
