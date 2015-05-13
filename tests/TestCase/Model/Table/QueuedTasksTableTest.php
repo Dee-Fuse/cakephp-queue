@@ -307,6 +307,8 @@ class QueuedTasksTableTest extends TestCase {
 		$this->assertTrue((bool)$this->QueuedTasks->createJob('dummytask', null));
 		$this->assertTrue((bool)$this->QueuedTasks->createJob('dummytask', null));
 
+		time_sleep_until(time()+1);
+
 		//At first we get task1-1.
 		$this->QueuedTasks->clearKey();
 		$tmp = $this->QueuedTasks->requestJob($capabilities);
@@ -319,7 +321,6 @@ class QueuedTasksTableTest extends TestCase {
 		$this->assertEquals('dummytask', $tmp['jobtype']);
 		$this->assertNull(unserialize($tmp['data']));
 		
-		usleep(500000);
 		//and again.
 		$this->QueuedTasks->clearKey();
 		$tmp = $this->QueuedTasks->requestJob($capabilities);
