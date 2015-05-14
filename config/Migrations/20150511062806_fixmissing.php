@@ -18,7 +18,7 @@ class Fixmissing extends AbstractMigration {
 		$table = $this->table('queued_tasks');
 		$table->addColumn('status', 'string', array('limit' => 255))
 			->renameColumn('group', 'task_group')
-			->create();
+			->save();
 	}
 
 	/**
