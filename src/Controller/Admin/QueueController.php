@@ -8,6 +8,18 @@ use Queue\Controller\AppController;
 class QueueController extends AppController {
 
 	public $modelClass = 'Queue.QueuedTask';
+	/**
+	 * Overwrite shell initialize to dynamically load all Queue Related Tasks.
+	 *
+	 * @return void
+	 */
+	public function initialize() {
+		$this->loadModel('Queue.QueuedTasks');
+        $this->loadComponent('Flash');
+
+	}
+	
+
 
 	/**
 	 * QueueController::beforeFilter()
@@ -34,8 +46,6 @@ class QueueController extends AppController {
 		$data = $this->QueuedTasks->getStats();
 
 		$this->set(compact('current', 'data', 'pendingDetails', 'status'));
-		$this->helpers[] = 'Tools.Format';
-		$this->helpers[] = 'Tools.Datetime';
 	}
 
 	/**
@@ -46,7 +56,7 @@ class QueueController extends AppController {
 	 */
 	public function reset() {
 		$this->request->allowMethod('post');
-		$res = $this->QueuedTasks->truncate();
+		$res = $this->QueuedTasks->deleteAll([]);
 
 		if ($res) {
 			$message = __d('queue', 'OK');
@@ -56,7 +66,7 @@ class QueueController extends AppController {
 			$class = 'error';
 		}
 
-		$this->Flash->message($message, $class);
+		$this->Flash->{$class}($message);
 
 		return $this->redirect(['action' => 'index']);
 	}

@@ -1,3 +1,7 @@
+<?php
+use Cake\Core\Configure;
+
+?>
 <div class="page index">
 <h2><?php echo __d('queue', 'Queue');?></h2>
 
@@ -6,7 +10,7 @@
 <?php
 	$running = (time() - $status['time']) < MINUTE;
 ?>
-<?php echo $this->Format->yesNo($running); ?> <?php echo $running ? __d('queue', 'Running') : __d('queue', 'Not running'); ?> (<?php echo __d('queue', 'last {0}', $this->Time->relLengthOfTime($status['time']))?>)
+<?php #echo $running ?> <?php echo $running ? __d('queue', 'Running') : __d('queue', 'Not running'); ?> (<?php echo __d('queue', 'last {0}', $status['time'])?>)
 
 <?php
 	echo '<div><small>Currently '.($status['workers']).' worker(s) total.</small></div>';
@@ -28,7 +32,7 @@ foreach ($pendingDetails as $item) {
 		echo '<li>Created: '.$item['created'].'</li>';
 		echo '<li>Fetched: '.$item['fetched'].'</li>';
 		echo '<li>Status: '.$item['status'].'</li>';
-		echo '<li>Progress: '.$this->Number->toPercentage($item['progress']).'</li>';
+		echo '<li>Progress: '.$this->Number->toPercentage($item['progress']*100).'</li>';
 		echo '<li>Failures: '.$item['failed'].'</li>';
 		echo '<li>Failure Message: '.$item['failure_message'].'</li>';
 	echo '</ul>';
