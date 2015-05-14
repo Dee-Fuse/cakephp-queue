@@ -1,13 +1,11 @@
-# CakePHP 3 Queue Plugin
-[![Build Status](https://api.travis-ci.org/dereuromark/cakephp-queue.png?branch=3.0)](https://travis-ci.org/dereuromark/cakephp-queue)
+# CakePHP Queue Plugin
+[![Build Status](https://api.travis-ci.org/dereuromark/cakephp-queue.svg)](https://travis-ci.org/dereuromark/cakephp-queue)
 [![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%205.4-8892BF.svg)](https://php.net/)
-[![License](https://poser.pugx.org/dereuromark/cakephp-queue/license.png)](https://packagist.org/packages/dereuromark/cakephp-queue)
-[![Total Downloads](https://poser.pugx.org/dereuromark/cakephp-queue/d/total.png)](https://packagist.org/packages/dereuromark/cakephp-queue)
+[![License](https://poser.pugx.org/dereuromark/cakephp-queue/license)](https://packagist.org/packages/dereuromark/cakephp-queue)
+[![Total Downloads](https://poser.pugx.org/dereuromark/cakephp-queue/d/total)](https://packagist.org/packages/dereuromark/cakephp-queue)
 [![Coding Standards](https://img.shields.io/badge/cs-PSR--2--R-yellow.svg)](https://github.com/php-fig-rectified/fig-rectified-standards)
 
-This `3.0` branch is for use with **CakePHP 3**.
-
-WARNING: NOT FULLY MIGRATED YET
+This branch is for use with **CakePHP 3**.
 
 ## Background:
 
@@ -160,8 +158,10 @@ Play around with it, but just don't shoot over the top.
 * Cleanup and better test coverage
 
 ## History
+A huge thx to Max ([Dee-Fuse](https://github.com/Dee-Fuse)) for making the 3.x upgrade complete!
+
 Modified by David Yell ([davidyell](https://github.com/davidyell))
-- CakePHP 3.x support
+- Basic CakePHP 3.x support
 
 Modified by Mark Scherer ([dereuromark](https://github.com/dereuromark))
 - CakePHP 2.x support
@@ -175,4 +175,3 @@ Added by Christian Charukiewicz ([charukiewicz](https://github.com/charukiewicz)
 - Fixed typo in README and variable name (Propability -> Probability)
 - Added a few lines about createJob() usage to README
 - Added comments to queue.php explaining configuration options
-
