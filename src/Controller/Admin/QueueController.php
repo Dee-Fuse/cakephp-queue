@@ -1,13 +1,17 @@
 <?php
 namespace Queue\Controller\Admin;
 
+use Cake\Core\App;
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Event\Event;
+use Cake\Filesystem\Folder;
 use Queue\Controller\AppController;
 
 class QueueController extends AppController {
 
 	public $modelClass = 'Queue.QueuedTask';
+
 	/**
 	 * Overwrite shell initialize to dynamically load all Queue Related Tasks.
 	 *
@@ -15,11 +19,8 @@ class QueueController extends AppController {
 	 */
 	public function initialize() {
 		$this->loadModel('Queue.QueuedTasks');
-        $this->loadComponent('Flash');
-
+		$this->loadComponent('Flash');
 	}
-	
-
 
 	/**
 	 * QueueController::beforeFilter()
@@ -104,6 +105,59 @@ class QueueController extends AppController {
 			'workers' => $count,
 		];
 		return $res;
+	}
+
+	/**
+	 * Add Job with UI
+	 *
+	 * @param string $task Task to add
+	 * @return void
+	 */
+	public function add($task = null) {
+		if ($this->request->is('post')) {
+			$task = substr($task, 5);
+			$this->loadModel('Queue.QueuedTasks');
+			$res = $this->QueuedTasks->createJob($task);
+			if ($res) {
+				$message = __d('queue', '{0} Added to queue');
+				$class = 'success';
+			} else {
+				$message = __d('queue', 'Error');
+				$class = 'error';
+			}
+			$this->Flash->{$class}($message);
+			return $this->redirect(['action' => 'add']);
+
+		}
+
+		$tasks = array();
+		$paths = App::path('Shell/Task');
+
+		foreach ($paths as $path) {
+			$Folder = new Folder($path);
+			$res = array_merge($tasks, $Folder->find('Queue.+\.php'));
+			foreach ($res as &$r) {
+				$r = basename($r, 'Task.php');
+			}
+			$tasks = $res;
+		}
+		$plugins = Plugin::loaded();
+		foreach ($plugins as $plugin) {
+			$pluginPaths = App::path('Shell/Task', $plugin);
+			foreach ($pluginPaths as $pluginPath) {
+				$Folder = new Folder($pluginPath);
+				$res = $Folder->find('Queue.+Task\.php');
+				foreach ($res as &$r) {
+					$r = /*$plugin . '.' .*/ basename($r, 'Task.php');
+				}
+				$tasks = array_merge($tasks, $res);
+			}
+		}
+		$status = $this->_status();
+
+		$current = $this->QueuedTasks->getLength();
+
+		$this->set(compact("tasks", 'status', 'current'));
 	}
 
 }
