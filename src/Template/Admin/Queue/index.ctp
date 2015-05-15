@@ -1,66 +1,64 @@
 <?php
 use Cake\Core\Configure;
-
+use Cake\I18n\Time;
 ?>
 <div class="page index">
-<h2><?php echo __d('queue', 'Queue');?></h2>
+<h2><?= __d('queue', 'Queue'); ?></h2>
 
-<h3><?php echo __d('queue', 'Status'); ?></h3>
-<?php if ($status) { ?>
-<?php
+<h3><?= __d('queue', 'Status'); ?></h3>
+<?php 
+if ($status) {
 	$running = (time() - $status['time']) < MINUTE;
-?>
-<?php #echo $running ?> <?php echo $running ? __d('queue', 'Running') : __d('queue', 'Not running'); ?> (<?php echo __d('queue', 'last {0}', $status['time'])?>)
 
-<?php
-	echo '<div><small>Currently '.($status['workers']).' worker(s) total.</small></div>';
+	echo ($running ? __d('queue', 'Running') : __d('queue', 'Not running')) . " (" . __d('queue', 'last {0}', Time::parse($status['time'])->i18nFormat()) . ")";
+	
+	echo '<div><small>'.__d('queue','Currently {0} worker(s) total.', $status['workers']).'</small></div>';
+} else {
+	echo 'n/a';
+}
 ?>
-<?php } else { ?>
-n/a
-<?php } ?>
 
-<h3><?php echo __d('queue', 'Queued Tasks'); ?></h3>
-<?php
- echo $current;
-?> task(s) await processing
+<h3><?= __d('queue', 'Queued Tasks'); ?></h3>
+<?= __d('queue', '{0} task(s) await processing',$current); ?>
 
 <ol>
 <?php
 foreach ($pendingDetails as $item) {
 	echo '<li>'.$item['jobtype'] . " (" . $item['reference'] . "):";
 	echo '<ul>';
-		echo '<li>Created: '.$item['created'].'</li>';
-		echo '<li>Fetched: '.$item['fetched'].'</li>';
-		echo '<li>Status: '.$item['status'].'</li>';
-		echo '<li>Progress: '.$this->Number->toPercentage($item['progress']*100).'</li>';
-		echo '<li>Failures: '.$item['failed'].'</li>';
-		echo '<li>Failure Message: '.$item['failure_message'].'</li>';
+		echo '<li>'.__d('queue', 'Created').': '.$item['created'].'</li>';
+		echo '<li>'.__d('queue', 'Fetched').': '.$item['fetched'].'</li>';
+		echo '<li>'.__d('queue', 'Status').': '.$item['status'].'</li>';
+		echo '<li>'.__d('queue', 'Progress').': '.$this->Number->toPercentage($item['progress']*100).'</li>';
+		echo '<li>'.__d('queue', 'Failures').': '.$item['failed'].'</li>';
+		echo '<li>'.__d('queue', 'Failure Message').': '.$item['failure_message'].'</li>';
 	echo '</ul>';
 	echo '</li>';
 }
 ?>
 </ol>
 
-<h3><?php echo __d('queue', 'Statistics'); ?></h3>
+<h3><?= __d('queue', 'Statistics'); ?></h3>
 <ul>
 <?php
 foreach ($data as $item) {
 	echo '<li>'.$item['jobtype'] . ":";
 	echo '<ul>';
-		echo '<li>Finished Jobs in Database: '.$item['num'].'</li>';
-		echo '<li>Average Job existence: '.$item['alltime'].'s</li>';
-		echo '<li>Average Execution delay: '.$item['fetchdelay'].'s</li>';
-		echo '<li>Average Execution time: '.$item['runtime'].'s</li>';
+		echo '<li>'.__d('queue', 'Finished Jobs in Database').': '.$item['num'].'</li>';
+		echo '<li>'.__d('queue', 'Average Job existence').': '.$item['alltime'].'s</li>';
+		echo '<li>'.__d('queue', 'Average Execution delay').': '.$item['fetchdelay'].'s</li>';
+		echo '<li>'.__d('queue', 'Average Execution time').': '.$item['runtime'].'s</li>';
 	echo '</ul>';
 	echo '</li>';
 }
-if (empty($data)) {
+
+if (empty($data->toArray())) {
 	echo 'n/a';
 }
 ?>
 </ul>
 
-<h3>Settings</h3>
+<h3><?= __d('queue', 'Settings');?></h3>
 <ul>
 <?php
 	$configurations = Configure::read('Queue');
@@ -82,6 +80,6 @@ if (empty($data)) {
 
 <div class="actions">
 	<ul>
-		<li><?php echo $this->Form->postLink(__d('queue', 'Reset {0}', __d('queue', 'Queue Tasks')), ['action' => 'reset'], ['confirm' => __d('queue', 'Sure? This will completely reset the queue.')]); ?></li>
+		<li><?= $this->Form->postLink(__d('queue', 'Reset {0}', __d('queue', 'Queue Tasks')), ['action' => 'reset'], ['confirm' => __d('queue', 'Sure? This will completely reset the queue.')]); ?></li>
 	</ul>
 </div>

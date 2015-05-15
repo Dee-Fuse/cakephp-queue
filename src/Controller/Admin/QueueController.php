@@ -119,7 +119,7 @@ class QueueController extends AppController {
 			$this->loadModel('Queue.QueuedTasks');
 			$res = $this->QueuedTasks->createJob($task);
 			if ($res) {
-				$message = __d('queue', '{0} Added to queue');
+				$message = __d('queue', '{0} Added to queue', $task);
 				$class = 'success';
 			} else {
 				$message = __d('queue', 'Error');
